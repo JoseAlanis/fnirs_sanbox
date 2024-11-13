@@ -11,7 +11,7 @@ from mne_nirs.visualisation import plot_timechannel_quality_metric
 # %%
 # set-up file naming pattern
 pattern = os.path.join(
-    'data_hc', '**', '*.nirs'
+    '../data_hc', '**', '*.nirs'
 )
 
 # %%

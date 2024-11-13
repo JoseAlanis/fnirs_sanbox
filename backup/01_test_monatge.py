@@ -81,7 +81,7 @@ raw = mne.io.read_raw_snirf(dataset.fpath)
 # %%
 # set-up file naming pattern
 pattern = os.path.join(
-    'data_hc', '**', '*.snirf'
+    '../data_hc', '**', '*.snirf'
 )
 
 # %%
@@ -117,7 +117,7 @@ labels_combined = mne.read_labels_from_annot(
 
 # set-up file naming pattern
 pattern = os.path.join(
-    'data_hc', '**', '*.nirs'
+    '../data_hc', '**', '*.nirs'
 )
 
 # %%
