@@ -121,3 +121,11 @@ def get_category_order(item, categories, order = 1):
         if category in item_lower:
             return i
     return len(categories)  # If not found, place at the end
+
+
+def shift_list(lst, shift_amount):
+    n = len(lst)
+    # Normalize the shift amount to ensure it's within the list's bounds
+    shift_amount %= n
+    # Perform the shift
+    return lst[-shift_amount:] + lst[:-shift_amount]

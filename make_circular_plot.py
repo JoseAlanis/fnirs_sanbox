@@ -5,7 +5,7 @@ import numpy as np
 
 # Custom modules for loading and plotting
 from circular import plot_connectivity_circle
-from utils import load_mat_file, load_labels_from_mat, add_occurrence_suffix, get_category_order
+from utils import load_mat_file, load_labels_from_mat, add_occurrence_suffix, get_category_order, shift_list
 from config import DATA_PATH
 
 # %%
@@ -78,9 +78,17 @@ combined_indices = l_indices_sorted + r_indices_sorted
 # Reorder connectivity matrix based on sorted indices
 reordered_matrix = mat[np.ix_(combined_indices, combined_indices)]
 
+# Define the shift amount
+shift_amount = +23  # Negative for left shift
+# Perform the column shift
+shifted_matrix = np.roll(reordered_matrix, shift_amount, axis=1)
+# Perform the row shift (to maintain correspondence with shifted columns)
+shifted_matrix = np.roll(shifted_matrix, shift_amount, axis=0)
+
 # Generate node names and colors based on brain regions
 node_names = [output_list[i] for i in combined_indices]
-base_names = ['_'.join(name.split('_')[:-1]) for name in node_names]
+node_names = shift_list(node_names, shift_amount)
+base_names = ['_'.join(name.split('_')[:-2]) for name in node_names]
 unique_base_names = sorted(set(base_names))
 
 # Assign colors to each brain region category
@@ -96,15 +104,16 @@ for base_name, color in colors.items():
 
 # Create a circular connectivity plot
 fig, ax = plt.subplots(figsize=(10, 10), facecolor="white", subplot_kw=dict(polar=True))
-plot_connectivity_circle(reordered_matrix,
+plot_connectivity_circle(shifted_matrix,
                          node_names=node_names,
                          node_colors=node_colors,
+                         colorbar_pos=(0.5, 1.5),
                          colormap='RdBu_r',
-                         vmin=-0.5, vmax=0.5,
+                         vmin=-0.25, vmax=0.25,
                          facecolor='white',
                          textcolor='black',
                          ax=ax)
 
 # Save and display the plot
-fig.savefig('/home/josealanis/Documents/projects/fnirs_sandbox/results/mdd-hc_rs1_effect.png', dpi=300)
+fig.savefig('/home/josealanis/Documents/projects/fnirs_sandbox/results/mdd-hc_10hz_effect.png', dpi=300)
 plt.show()

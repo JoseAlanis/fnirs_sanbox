@@ -421,7 +421,8 @@ def _plot_connectivity_circle(
     # Draw node labels
     angles_deg = 180 * node_angles / np.pi
     for name, angle_rad, angle_deg in zip(node_names, node_angles, angles_deg):
-        if angle_deg >= 270:
+        # if angle_deg >= 180:
+        if '_R_' in name:
             ha = "left"
         else:
             # Flip the label, so text is always upright
@@ -451,7 +452,7 @@ def _plot_connectivity_circle(
             colorbar_kwargs.update(shrink=colorbar_size)
         if colorbar_pos is not None:
             colorbar_kwargs.update(anchor=colorbar_pos)
-        cb = fig.colorbar(sm, ax=ax, **colorbar_kwargs)
+        cb = fig.colorbar(sm, ax=ax, orientation='horizontal', **colorbar_kwargs)
         cb_yticks = plt.getp(cb.ax.axes, "yticklabels")
         cb.ax.tick_params(labelsize=fontsize_colorbar)
         plt.setp(cb_yticks, color=textcolor)
